@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class TreeHeightMain {
     class FastScanner {
@@ -31,6 +28,7 @@ public class TreeHeightMain {
         int parent[];
         Node root;
         Node nodes[];
+        int level = 0;
 
         void read() throws IOException {
             FastScanner in = new FastScanner();
@@ -48,20 +46,30 @@ public class TreeHeightMain {
         }
 
         private int postOverTraversal(Node root) {
+            int max = -1;
             if (root == null) {
                 return 0;
             }
-            if (root.children.isEmpty()) {
-                return 1;
-            }
-            List<Integer> res = new ArrayList<>(1);
-            for (Node dd :
-                    root.children) {
-                res.add(postOverTraversal(dd));
+            Queue<Node> queue = new LinkedList<Node>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                Node next = queue.poll();
+
+                for (Node dd :
+                        next.children) {
+                    dd.level = next.level + 1;
+                    if (dd.level > max) {
+                        max = dd.level;
+                    }
+                    queue.add(dd);
+                }
+
             }
 
 
-            return Collections.max(res) + 1;
+
+
+            return max + 1;
 
 
         }
@@ -88,6 +96,7 @@ public class TreeHeightMain {
     private class Node {
         List<Node> children = new ArrayList<Node>(1);
         int idx;
+        int level  = 0;
 
         public Node(int idx) {
             this.idx = idx;
@@ -106,7 +115,14 @@ public class TreeHeightMain {
     }
 
     static public void main(String[] args) throws IOException {
-        new TreeHeightMain().run();
+        new Thread(null, new Runnable() {
+            public void run() {
+                try {
+                    new TreeHeightMain().run();
+                } catch (IOException e) {
+                }
+            }
+        }, "1", 1 << 26).start();
     }
 
     public void run() throws IOException {
