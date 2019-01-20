@@ -7,31 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
-class CheckBracketsTest {
-
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-    private ByteArrayInputStream inContent;
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
-
-    @BeforeEach
-    public void setUpOutput() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
-    }
-
-    private void provideInput(String data) {
-        inContent = new ByteArrayInputStream(data.getBytes());
-        System.setIn(inContent);
-    }
+class CheckBracketsTest extends BaseIoTestSuite {
 
 
-    @AfterEach
-    public void restoreSystemInputOutput() {
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-    }
 
     @Test
     public void testCase1() throws IOException {
