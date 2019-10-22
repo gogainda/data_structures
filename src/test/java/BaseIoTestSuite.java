@@ -10,13 +10,11 @@ public class BaseIoTestSuite {
     protected final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private ByteArrayInputStream inContent;
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
+    protected final PrintStream originalOut = System.out;
 
     @BeforeEach
     public void setUpOutput() {
         System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
     }
 
     void provideInput(String data) {
@@ -28,6 +26,5 @@ public class BaseIoTestSuite {
     @AfterEach
     public void restoreSystemInputOutput() {
         System.setOut(originalOut);
-        System.setErr(originalErr);
     }
 }
